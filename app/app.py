@@ -1,5 +1,6 @@
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 import streamlit as st
 from PIL import Image
 
@@ -51,9 +52,12 @@ with tabOverview:
         st.write(f'Chip Types: {", ".join(TYPE_VALUES)}')
         st.write(f'Vendors: {", ".join(sorted(VENDOR_VALUES))}')
         st.write(f'Foundries: {", ".join(sorted(FOUNDRY_VALUES))}')
-    with st.expander(label='Chip Vendors'):
+
+    col1, col2, col3= st.columns([1,2,1])
+    with col1:
         data = {
-            'labels': ['CPU', 'GPU'],
+            'ids': ['GPU', 'CPU'],
+            'labels': ['GPU', 'CPU'],
             'parents': ['', ''],
             'value': df['Type'].value_counts().tolist()
         }
@@ -62,15 +66,30 @@ with tabOverview:
             vals = df.loc[df['Type'] == i]['Vendor'].value_counts()
             for j in VENDOR_VALUES:
                 if j in vals.index:
+                    data['ids'].append(f'{i} - {j}')
                     data['parents'].append(i)
-                    data['labels'].append(f'{j}-{i}')
+                    data['labels'].append(j)
                     data['value'].append(vals[j])
 
-        st.plotly_chart(px.sunburst(data, names='labels', parents='parents', values='value', 
-            color='labels', color_discrete_sequence=px.colors.qualitative.Pastel,
-            title='Chip Vendors'))
+        # st.plotly_chart(px.sunburst(data, 
+        #     names='labels', parents='parents', values='value', 
+        #     color='labels', color_discrete_sequence=px.colors.qualitative.Pastel,
+        #     title='Chip Vendors'
+        #     ))
+        st.markdown('### Vendors')
+        st.plotly_chart(
+            go.Figure(go.Sunburst(
+            ids=data['ids'],
+            labels=data['labels'],
+            parents=data['parents'],
+            branchvalues='remainder',
+            values=data['value'],
+            marker={'colors':px.colors.qualitative.Pastel}
+            )), use_container_width=True
+        )
 
-    with st.expander(label='Chips & Frequency Scatterplot'):
+    with col2:
+        st.markdown('### Chip Frequency and Release Date')
         st.plotly_chart(px.scatter(df, x='Release Date', y='Freq (MHz)', color='Type'))
     
 # Tab Data

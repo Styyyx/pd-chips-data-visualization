@@ -43,6 +43,9 @@ st.markdown("""
         </style>
         """, unsafe_allow_html=True)
 
+st.markdown('# Chips Data Visualization')
+st.write('by Patrick Alcantara')
+
 tabOverview, tabData = st.tabs(['Overview', 'Data'])
 
 # Tab Overview

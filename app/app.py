@@ -2,12 +2,11 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
-from PIL import Image
 
 # Initial Setup
 st.set_page_config(
     page_title='Chips Data',
-    page_icon=Image.open('res/icon.png'),
+    page_icon=':barchart:',
     layout='wide',
     initial_sidebar_state='auto'
 )
@@ -24,6 +23,7 @@ st.markdown("""
 @st.cache
 def getData():
     df = pd.read_csv('./chips.csv').drop(columns='Unnamed: 0')
+    df['Release Date'] = pd.DatetimeIndex(df['Release Date'])
     return df
 df = getData()
 
@@ -79,12 +79,13 @@ with tabOverview:
                         data['labels'].append(j)
                         data['value'].append(vals[j])
 
-            st.markdown('### Vendors')
+            st.markdown('<h3 style="text-align: center">Vendors</h3>', unsafe_allow_html=True)
             st.plotly_chart(go.Figure(go.Sunburst(ids=data['ids'], labels=data['labels'], parents=data['parents'],
-                branchvalues='remainder', values=data['value'], marker={'colors':px.colors.qualitative.Pastel})), use_container_width=True)
+                branchvalues='remainder', values=data['value'], marker={'colors':px.colors.qualitative.Pastel}
+                )), use_container_width=True)
         
         with col3:
-            st.markdown('### Foundries')
+            st.markdown('<h3 style="text-align: center">Foundries</h3>', unsafe_allow_html=True)
             foundry = df['Foundry'].unique()
 
             data = {
@@ -104,13 +105,16 @@ with tabOverview:
                         data['value'].append(vals[j])
             st.plotly_chart(go.Figure(go.Sunburst(ids=data['ids'], labels=data['labels'], parents=data['parents'],
                 branchvalues='remainder', values=data['value'], marker={'colors':px.colors.qualitative.Pastel})))
-    
+
     with st.container():
         col1, col2 = st.columns(2)
         with col1:
-            st.markdown('### Chip Frequency and Release Date')
-            st.plotly_chart(px.scatter(df, x='Release Date', y='Freq (MHz)', color='Type',
-                hover_data=['Product', 'Type', 'Release Date', 'Freq (MHz)']))
+            st.markdown('### No. of Chips Released Per Quartile')
+            sdf = df.copy()
+            sdf['quarter'] = sdf['Release Date'].dt.to_period('Q').astype(str)
+            st.plotly_chart(px.histogram(
+                sdf.loc[sdf['quarter'] != 'NaT'].sort_values(by=['quarter']),
+                x='quarter', color='Type', barmode='overlay'))
         
         with col2:
             st.markdown('### Average Chip Frequency Per Release Date')
@@ -118,6 +122,15 @@ with tabOverview:
                 ['Type', 'Release Date'], as_index=False)['Freq (MHz)'].mean().rename(
                     columns={'Freq (MHz)': 'Average Frequency (MHz)'})
             st.plotly_chart(px.line(gb, x='Release Date', y='Average Frequency (MHz)', color='Type', symbol='Type'))
+
+    with st.container():
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown('### Process Size and TDP')
+            sdf = df.loc[(df['Process Size (nm)'].notna()) & (df['TDP (W)'].notna())]
+            st.plotly_chart(px.scatter(sdf.sort_values(by=['Process Size (nm)'], ascending=False),
+                x='Process Size (nm)', y='TDP (W)', color='Type', symbol='Type',
+                hover_data=['Product']))
     
 # Tab Data
 with tabData:

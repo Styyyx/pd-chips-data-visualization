@@ -46,7 +46,7 @@ st.markdown("""
 with st.empty():
     col1, col2 = st.columns([9, 1])
     with col1:
-        st.markdown('# Chips Data Visualization')
+        st.markdown('# Microprocessor Chips Data Visualization')
     with col2:
         st.markdown('by: Patrick Alcantara')
 

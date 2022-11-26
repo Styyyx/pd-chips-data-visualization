@@ -1,8 +1,15 @@
 # Data Visualization
+Data visualization of chips dataset for subject Parallel and Distributed Computing
 
-libraries used:
+# Requirements
+- Python 3.8+
 - pandas
 - plotly
 - streamlit
 
-Test
+to install dependencies:
+>pip install -r reqs.txt
+
+---
+to run local server, navigate to app/ folder
+>streamlit run app.py

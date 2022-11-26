@@ -6,7 +6,7 @@ import streamlit as st
 # Initial Setup
 st.set_page_config(
     page_title='Chips Data',
-    page_icon=':barchart:',
+    page_icon=':bar_chart:',
     layout='wide',
     initial_sidebar_state='auto'
 )

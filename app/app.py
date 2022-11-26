@@ -55,13 +55,22 @@ tabOverview, tabData = st.tabs(['Overview', 'Data'])
 # Tab Overview
 with tabOverview:
     with st.container():
-        col1, col2, col3, _ = st.columns([8,8,8,1])
+        st.write(f'Total Entries: {df.shape[0]}')
+        st.write(f'Chip Types: {", ".join(TYPE_VALUES)}')
+
+        _, col1, col2, _, col3, col4, _ = st.columns([1,4,8,1,4,8,1])
 
         with col1:
-            st.write(f'Total Entries: {df.shape[0]}')
-            st.write(f'Chip Types: {", ".join(TYPE_VALUES)}')
-            st.write(f'Vendors: {", ".join(sorted(VENDOR_VALUES))}')
-            st.write(f'Foundries: {", ".join(sorted(FOUNDRY_VALUES))}')
+            st.markdown('# Vendors')
+            sdf = df['Vendor'].value_counts().to_frame().rename(columns={'Vendor':'Count'})
+            sdf.index.name = 'Vendor'
+            st.table(sdf['Count'])
+
+        with col3:
+            st.markdown('# Foundries')
+            sdf = df['Foundry'].value_counts().to_frame().rename(columns={'Foundry':'Count'})
+            sdf.index.name = 'Foundry'
+            st.table(sdf['Count'])
 
         with col2:
             data = {
@@ -80,15 +89,11 @@ with tabOverview:
                         data['labels'].append(j)
                         data['value'].append(vals[j])
 
-            st.markdown('<h3 style="text-align: center">Vendors</h3>', unsafe_allow_html=True)
             st.plotly_chart(go.Figure(go.Sunburst(ids=data['ids'], labels=data['labels'], parents=data['parents'],
-                branchvalues='remainder', values=data['value'], marker={'colors':px.colors.qualitative.Pastel}
-                )), use_container_width=True)
+                branchvalues='total', values=data['value'], marker={'colors':px.colors.qualitative.Pastel}
+                )).update_traces(textinfo='label+percent parent'), use_container_width=True)
         
-        with col3:
-            st.markdown('<h3 style="text-align: center">Foundries</h3>', unsafe_allow_html=True)
-            foundry = df['Foundry'].unique()
-
+        with col4:
             data = {
                 'ids': ['GPU', 'CPU'],
                 'labels': ['GPU', 'CPU'],
@@ -105,7 +110,8 @@ with tabOverview:
                         data['labels'].append(j)
                         data['value'].append(vals[j])
             st.plotly_chart(go.Figure(go.Sunburst(ids=data['ids'], labels=data['labels'], parents=data['parents'],
-                branchvalues='remainder', values=data['value'], marker={'colors':px.colors.qualitative.Pastel})))
+                branchvalues='total', values=data['value'], marker={'colors':px.colors.qualitative.Pastel}
+                )).update_traces(textinfo='label+percent parent'))
 
     with st.container():
         col1, col2 = st.columns(2)

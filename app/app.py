@@ -43,19 +43,17 @@ st.markdown("""
         </style>
         """, unsafe_allow_html=True)
 
-st.markdown('# Chips Data Visualization')
-st.write('by Patrick Alcantara')
+with st.empty():
+    col1, col2 = st.columns([9, 1])
+    with col1:
+        st.markdown('# Chips Data Visualization')
+    with col2:
+        st.markdown('by: Patrick Alcantara')
 
 tabOverview, tabData = st.tabs(['Overview', 'Data'])
 
 # Tab Overview
 with tabOverview:
-    # with st.expander(label='Details', expanded=True):
-    #     st.write(f'Total Entries: {df.shape[0]}')
-    #     st.write(f'Chip Types: {", ".join(TYPE_VALUES)}')
-    #     st.write(f'Vendors: {", ".join(sorted(VENDOR_VALUES))}')
-    #     st.write(f'Foundries: {", ".join(sorted(FOUNDRY_VALUES))}')
-
     with st.container():
         col1, col2, col3 = st.columns(3)
 

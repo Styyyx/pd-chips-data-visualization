@@ -140,9 +140,8 @@ with tabOverview:
                 hover_data=['Product']))
 
         with col2:
-            sdf = df.copy()
             st.markdown('### Floating Point Process Speed')
-            st.plotly_chart(px.scatter(sdf, x='Release Date', y=['FP16 GFLOPS', 'FP32 GFLOPS', 'FP64 GFLOPS'], hover_data=['Product']))
+            st.plotly_chart(px.scatter(df, x='Release Date', y=['FP16 GFLOPS', 'FP32 GFLOPS', 'FP64 GFLOPS'], hover_data=['Product']))
 
     
 # Tab Data

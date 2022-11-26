@@ -55,7 +55,7 @@ tabOverview, tabData = st.tabs(['Overview', 'Data'])
 # Tab Overview
 with tabOverview:
     with st.container():
-        col1, col2, col3 = st.columns(3)
+        col1, col2, col3, _ = st.columns([8,8,8,1])
 
         with col1:
             st.write(f'Total Entries: {df.shape[0]}')

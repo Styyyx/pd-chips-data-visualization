@@ -16,7 +16,7 @@ to run local server, navigate to app/ folder
 
 ---
 
-# [Live Server](http://13.214.34.91:5000/)
+# [Live Server](http://13.214.34.91:5000/?target="blank")
 - currently down
 - interactive plots and table
 

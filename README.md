@@ -13,3 +13,7 @@ to install dependencies:
 ---
 to run local server, navigate to app/ folder
 >streamlit run app.py
+
+# Page Preview
+![]((./pics/pic1.png "Image #1"))
+

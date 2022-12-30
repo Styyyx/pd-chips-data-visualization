@@ -15,5 +15,14 @@ to run local server, navigate to app/ folder
 >streamlit run app.py
 
 # Page Preview
-![]((./pics/pic1.png "Image #1"))
+![]((https://github.com/Styyyx/pd-chips-data-visualization/blob/main/pics/pic1.png))
 
+![]((https://github.com/Styyyx/pd-chips-data-visualization/blob/main/pics/pic2.1.png))
+
+![]((https://github.com/Styyyx/pd-chips-data-visualization/blob/main/pics/pic2.2.png))
+
+![]((https://github.com/Styyyx/pd-chips-data-visualization/blob/main/pics/pic3.1.png))
+
+![]((https://github.com/Styyyx/pd-chips-data-visualization/blob/main/pics/pic3.2.png))
+
+![]((https://github.com/Styyyx/pd-chips-data-visualization/blob/main/pics/pic4.png))
